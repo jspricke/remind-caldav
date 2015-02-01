@@ -1,17 +1,20 @@
 # CalDAV client to sync to Remind
 
-Needs python-remind
+Needs python-remind, python-caldav
 
-Needs to be written.
+# How to connect to Google
 
-## helpful libs
+Go to https://www.google.com/settings/security/lesssecureapps and enable
+"Access for less secure apps". This enables basic HTTP authentication as OAuth2
+is not supported by python-caldav.
 
-- https://bitbucket.org/cyrilrbt/caldav
-- https://github.com/tobixen/calendar-cli
-- https://github.com/untitaker/vdirsyncer
-- http://lostpackets.de/pycarddav/
+URL: https://www.google.com/calendar/dav/<calid>/user
 
-# Google
+"Where calid should be replaced by the "calendar ID" of the calendar to be
+accessed. This can be found through the Google Calendar web interface as
+follows: in the pull-down menu next to the calendar name, select Calendar
+Settings. On the resulting page the calendar ID is shown in a section labelled
+Calendar Address. The calendar ID for a user's primary calendar is the same as
+that user's email address."
 
-- https://support.google.com/calendar/answer/99358?hl=de
-- https://developers.google.com/google-apps/calendar/
+https://developers.google.com/google-apps/calendar/caldav/v2/guide
