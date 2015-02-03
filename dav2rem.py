@@ -29,35 +29,34 @@ def main():
     """Command line tool to download from CalDAV to Remind"""
 
     parser = ArgumentParser(description='Command line tool to download from CalDAV to Remind')
-    parser.add_argument('infile', nargs='?', default=expanduser('~/.reminders'),
+    parser.add_argument('-d', '--delete', type=bool, default=True,
+                        help='Delete old events')
+    parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
+    parser.add_argument('-u', '--davuser', required=True, help='The username for the calDAV server')
+    parser.add_argument('remfile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
-    parser.add_argument('davurl', help='The URL of the calDAV server')
-    parser.add_argument('davuser', help='The username for the calDAV server')
-    parser.add_argument('davcal', help='The calendar name on the calDAV server')
     args = parser.parse_args()
 
-    rem = Remind(args.infile)
-
-    ldict = {uid: None for uid in rem.get_uids(args.infile)}
+    rem = Remind(args.remfile)
+    ldict = set(rem.get_uids())
 
     passwd = getpass()
     client = DAVClient(args.davurl, username=args.davuser, password=passwd)
     principal = client.principal()
-    calendar = principal.calendars()[args.davcal]
+    calendar = principal.calendars()[0]
 
     rdict = {splitext(basename(event.canonical_url))[0] : event for event in calendar.events()}
 
-    local = ldict.viewkeys() - rdict.viewkeys()
+    if args.delete:
+        local = ldict - rdict.viewkeys()
+        for uid in local:
+            rem.remove(uid)
 
-    for uid in local:
-        rem.remove(uid, rem.get_filesnames()[0])
-
-    remote = rdict.viewkeys() - ldict.viewkeys()
-
+    remote = rdict.viewkeys() - ldict
     for uid in remote:
         vevent = rdict[uid]
         vevent.load()
-        rem.append(vevent.data, rem.get_filesnames()[0])
+        rem.append(vevent.data)
 
 if __name__ == '__main__':
     main()

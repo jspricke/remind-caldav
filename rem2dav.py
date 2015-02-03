@@ -39,11 +39,12 @@ def main():
                         default=date.today(), help='Start offset for remind call')
     parser.add_argument('-m', '--month', type=int, default=15,
                         help='Number of month to generate calendar beginning wit stadtdate (default: 15)')
+    parser.add_argument('-d', '--delete', type=bool, default=True,
+                        help='Delete old events')
+    parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
+    parser.add_argument('-u', '--davuser', required=True, help='The username for the calDAV server')
     parser.add_argument('infile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
-    parser.add_argument('davurl', help='The URL of the calDAV server')
-    parser.add_argument('davuser', help='The username for the calDAV server')
-    parser.add_argument('davcal', help='The calendar name on the calDAV server')
     args = parser.parse_args()
 
     zone = gettz(args.zone)
@@ -59,21 +60,20 @@ def main():
     passwd = getpass()
     client = DAVClient(args.davurl, username=args.davuser, password=passwd)
     principal = client.principal()
-    calendar = principal.calendars()[args.davcal]
+    calendar = principal.calendars()[0]
 
     rdict = {splitext(basename(event.canonical_url))[0] : event for event in calendar.events()}
 
     local = ldict.viewkeys() - rdict.viewkeys()
-
     for uid in local:
         ncal = iCalendar()
         ncal.add(ldict[uid])
         calendar.add_event(ncal.serialize())
 
-    remote = rdict.viewkeys() - ldict.viewkeys()
-
-    for uid in remote:
-        rdict[uid].delete()
+    if args.delete:
+        remote = rdict.viewkeys() - ldict.viewkeys()
+        for uid in remote:
+            rdict[uid].delete()
 
 if __name__ == '__main__':
     main()
