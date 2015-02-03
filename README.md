@@ -1,6 +1,6 @@
 # CalDAV client to sync to Remind
 
-Needs python-remind, python-caldav
+Needs python-remind, python-caldav, python-dateuil and vobject libraries
 
 # How to connect to Google
 
