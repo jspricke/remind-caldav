@@ -29,6 +29,7 @@ from remind import Remind
 from vobject import iCalendar
 # pylint: disable=maybe-no-member
 
+
 def main():
     """Command line tool to upload a Remind file to CalDAV"""
 
@@ -55,14 +56,14 @@ def main():
     rem = Remind(args.infile, zone, startdate=args.startdate, month=args.month)
     vcal = rem.to_vobject()
 
-    ldict = {event.uid.value : event for event in vcal.vevent_list}
+    ldict = {event.uid.value: event for event in vcal.vevent_list}
 
     passwd = getpass()
     client = DAVClient(args.davurl, username=args.davuser, password=passwd)
     principal = client.principal()
     calendar = principal.calendars()[0]
 
-    rdict = {splitext(basename(event.canonical_url))[0] : event for event in calendar.events()}
+    rdict = {splitext(basename(event.canonical_url))[0]: event for event in calendar.events()}
 
     local = ldict.viewkeys() - rdict.viewkeys()
     for uid in local:

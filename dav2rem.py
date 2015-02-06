@@ -25,6 +25,7 @@ from os.path import basename, expanduser, splitext
 from remind import Remind
 # pylint: disable=maybe-no-member
 
+
 def main():
     """Command line tool to download from CalDAV to Remind"""
 
@@ -45,7 +46,7 @@ def main():
     principal = client.principal()
     calendar = principal.calendars()[0]
 
-    rdict = {splitext(basename(event.canonical_url))[0] : event for event in calendar.events()}
+    rdict = {splitext(basename(event.canonical_url))[0]: event for event in calendar.events()}
 
     if args.delete:
         local = ldict - rdict.viewkeys()
