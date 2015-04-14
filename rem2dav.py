@@ -26,6 +26,7 @@ from dateutil.tz import gettz
 from getpass import getpass
 from os.path import basename, expanduser, splitext
 from remind import Remind
+from sys import stdin
 from vobject import iCalendar
 # pylint: disable=maybe-no-member
 
@@ -53,10 +54,14 @@ def main():
     # (python-vobject tests for the zone attribute)
     zone.zone = args.zone
 
-    rem = Remind(args.infile, zone, startdate=args.startdate, month=args.month)
-    vcal = rem.to_vobject()
+    if args.infile == '-':
+        remind = Remind(args.infile, zone, args.startdate, args.month)
+        vobject = remind.stdin_to_vobject(stdin.read().decode('utf-8'))
+    else:
+        remind = Remind(args.infile, zone, args.startdate, args.month)
+        vobject = remind.to_vobject()
 
-    ldict = {event.uid.value: event for event in vcal.vevent_list}
+    ldict = {event.uid.value: event for event in vobject.vevent_list}
 
     passwd = getpass()
     client = DAVClient(args.davurl, username=args.davuser, password=passwd)
