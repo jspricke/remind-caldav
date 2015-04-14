@@ -24,8 +24,10 @@ from datetime import date
 from dateutil.parser import parse
 from dateutil.tz import gettz
 from getpass import getpass
+from netrc import netrc
 from os.path import basename, expanduser, splitext
 from remind import Remind
+from urlparse import urlparse
 from sys import stdin
 from vobject import iCalendar
 # pylint: disable=maybe-no-member
@@ -44,7 +46,7 @@ def main():
     parser.add_argument('-d', '--delete', type=bool, default=False,
                         help='Delete old events')
     parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
-    parser.add_argument('-u', '--davuser', required=True, help='The username for the calDAV server')
+    parser.add_argument('-u', '--davuser', help='The username for the calDAV server')
     parser.add_argument('infile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
     args = parser.parse_args()
@@ -63,8 +65,16 @@ def main():
 
     ldict = {event.uid.value: event for event in vobject.vevent_list}
 
-    passwd = getpass()
-    client = DAVClient(args.davurl, username=args.davuser, password=passwd)
+    try:
+        (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
+    except (IOError, TypeError):
+        if not args.davuser:
+            print "rem2dav: error: argument -u/--davuser is required"
+            return 2
+        user = args.davuser
+        passwd = getpass()
+
+    client = DAVClient(args.davurl, username=user, password=passwd)
     principal = client.principal()
     calendar = principal.calendars()[0]
 
