@@ -40,7 +40,7 @@ def main():
                         default=date.today(), help='Start offset for remind call')
     parser.add_argument('-m', '--month', type=int, default=15,
                         help='Number of month to generate calendar beginning wit stadtdate (default: 15)')
-    parser.add_argument('-d', '--delete', type=bool, default=True,
+    parser.add_argument('-d', '--delete', type=bool, default=False,
                         help='Delete old events')
     parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
     parser.add_argument('-u', '--davuser', required=True, help='The username for the calDAV server')
