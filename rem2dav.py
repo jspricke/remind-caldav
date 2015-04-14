@@ -63,7 +63,7 @@ def main():
     principal = client.principal()
     calendar = principal.calendars()[0]
 
-    rdict = {splitext(basename(event.canonical_url))[0]: event for event in calendar.events()}
+    rdict = {splitext(basename(event.canonical_url))[0].replace('%40', '@'): event for event in calendar.events()}
 
     local = ldict.viewkeys() - rdict.viewkeys()
     for uid in local:
