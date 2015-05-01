@@ -63,7 +63,10 @@ def main():
         remind = Remind(args.infile, zone, args.startdate, args.month)
         vobject = remind.to_vobject()
 
-    ldict = {event.uid.value: event for event in vobject.vevent_list}
+    if hasattr(vobject, 'vevent_list'):
+        ldict = {event.uid.value: event for event in vobject.vevent_list}
+    else:
+        ldict = {}
 
     try:
         (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
