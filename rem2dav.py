@@ -20,7 +20,7 @@
 
 from argparse import ArgumentParser
 from caldav import DAVClient
-from datetime import date
+from datetime import date, timedelta
 from dateutil.parser import parse
 from dateutil.tz import gettz
 from getpass import getpass
@@ -40,7 +40,7 @@ def main():
     parser.add_argument('-z', '--zone', default='Europe/Berlin',
                         help='Timezone of Remind file (default: Europe/Berlin)')
     parser.add_argument('-s', '--startdate', type=lambda s: parse(s).date(),
-                        default=date.today(), help='Start offset for remind call')
+                        default=date.today()-timedelta(weeks=12), help='Start offset for remind call (default: -12 weeks)')
     parser.add_argument('-m', '--month', type=int, default=15,
                         help='Number of month to generate calendar beginning wit stadtdate (default: 15)')
     parser.add_argument('-d', '--delete', type=bool, default=False,
