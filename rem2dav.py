@@ -43,8 +43,7 @@ def main():
                         default=date.today()-timedelta(weeks=12), help='Start offset for remind call (default: -12 weeks)')
     parser.add_argument('-m', '--month', type=int, default=15,
                         help='Number of month to generate calendar beginning wit stadtdate (default: 15)')
-    parser.add_argument('-d', '--delete', type=bool, default=False,
-                        help='Delete old events')
+    parser.add_argument('-d', '--delete', action='store_true', help='Delete old events')
     parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
     parser.add_argument('-u', '--davuser', help='The username for the calDAV server')
     parser.add_argument('infile', nargs='?', default=expanduser('~/.reminders'),
