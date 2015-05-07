@@ -48,6 +48,7 @@ def main():
     parser.add_argument('-u', '--davuser', help='The username for the calDAV server')
     parser.add_argument('infile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
+    parser.add_argument('-o', '--old', default=None, help='The old reference Remind file (entries not in the current one will be deleted from dav)')
     args = parser.parse_args()
 
     zone = gettz(args.zone)
@@ -82,13 +83,24 @@ def main():
 
     rdict = {splitext(basename(event.canonical_url))[0].replace('%40', '@'): event for event in calendar.events()}
 
+    if args.old:
+        old = Remind(args.old, zone, args.startdate, args.month)
+        old_vobject = old.to_vobject()
+
+        if hasattr(old_vobject, 'vevent_list'):
+            odict = {event.uid.value: event for event in old_vobject.vevent_list}
+            intersect = rdict.viewkeys() & odict.viewkeys()
+            rdict = {key: rdict[key] for key in intersect}
+        else:
+            rdict = {}
+
     local = ldict.viewkeys() - rdict.viewkeys()
     for uid in local:
         ncal = iCalendar()
         ncal.add(ldict[uid])
         calendar.add_event(ncal.serialize())
 
-    if args.delete:
+    if args.delete or args.old:
         remote = rdict.viewkeys() - ldict.viewkeys()
         for uid in remote:
             rdict[uid].delete()
