@@ -1,7 +1,32 @@
 CalDAV client to sync to Remind
 ===============================
 
-Needs python-remind, python-caldav, python-dateuil and vobject libraries
+Tools to sync from CalDAV to Remind (``dav2rem.py``) and the other way round (``rem2dav.py``).
+
+Installation
+------------
+
+You need to have the Remind command line tool installed.
+For Debian/Ubuntu use::
+
+  $ sudo apt-get install remind
+
+Using pip
+~~~~~~~~~
+
+::
+
+  $ pip install remind-caldav
+
+This will install all Python dependencies as well.
+
+Using python-setuptools
+~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+  $ python setup.py install
+
 
 How to connect to Google
 ------------------------
