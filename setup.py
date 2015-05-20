@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='remind-caldav',
-      version='0.3.0',
+      version='0.3.1',
       description='''
        Remind CalDAV tools
        ''',
