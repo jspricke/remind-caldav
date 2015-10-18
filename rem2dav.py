@@ -69,17 +69,24 @@ def main():
     else:
         ldict = {}
 
-    try:
-        (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
-    except (IOError, TypeError):
-        if not args.davuser:
-            print "rem2dav: error: argument -u/--davuser is required"
-            return 2
+    if args.davuser and args.davpass:
         user = args.davuser
-        if args.davpass:
-            passwd = args.davpass
-        else:
-            passwd = getpass()
+        passwd = args.davpass
+    else:
+        try:
+            (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
+        except (IOError, TypeError):
+            if not args.davuser:
+                print 'rem2dav: Error, argument -u/--davuser or netrc is required'
+                return 1
+            user = args.davuser
+            try:
+                from keyring import get_password
+                passwd = get_password('rem2dav', '%s@%s' % (user, urlparse(args.davurl).netloc))
+            except ImportError:
+                passwd = None
+            if not passwd:
+                passwd = getpass()
 
     client = DAVClient(args.davurl, username=user, password=passwd)
     principal = client.principal()
