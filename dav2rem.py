@@ -41,6 +41,9 @@ def main():
                         help='The Remind file to process (default: ~/.reminders)')
     args = parser.parse_args()
 
+    # create empty file if it does not exist
+    open(args.remfile, 'a')
+
     rem = Remind(args.remfile)
     ldict = set(rem.get_uids())
 
