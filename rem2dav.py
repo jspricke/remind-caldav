@@ -19,7 +19,7 @@
 """Python tool to sync between Remind and CalDAV"""
 
 from argparse import ArgumentParser
-from caldav import DAVClient
+from caldav import DAVClient, Calendar
 from datetime import date, timedelta
 from dateutil.parser import parse
 from dateutil.tz import gettz
@@ -89,8 +89,7 @@ def main():
                 passwd = getpass()
 
     client = DAVClient(args.davurl, username=user, password=passwd)
-    principal = client.principal()
-    calendar = principal.calendars()[0]
+    calendar = Calendar(client, args.davurl)
 
     rdict = {splitext(basename(event.canonical_url))[0].replace('%40', '@'): event for event in calendar.events()}
 
