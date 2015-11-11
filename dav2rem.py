@@ -36,6 +36,7 @@ def main():
                         help='Delete old events')
     parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
     parser.add_argument('-u', '--davuser', help='The username for the calDAV server')
+    parser.add_argument('-p', '--davpass', help='The password for the calDAV server')
     parser.add_argument('remfile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
     args = parser.parse_args()
@@ -50,7 +51,10 @@ def main():
             print "dav2rem: error: argument -u/--davuser is required"
             return 2
         user = args.davuser
-        passwd = getpass()
+        if args.davpass:
+            passwd = args.davpass
+        else:
+            passwd = getpass()
 
     client = DAVClient(args.davurl, username=user, password=passwd)
     principal = client.principal()
