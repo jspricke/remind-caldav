@@ -27,6 +27,24 @@ Using python-setuptools
 
   $ python setup.py install
 
+Providing the Password
+----------------------
+
+There are a number of options how to provide the CalDAV password:
+* Use a `netrc(5) <http://linux.die.net/man/5/netrc>`_ file:
+
+::
+
+  machine <domain> login <user> password <password>
+
+<domain> being the domain part of the CalDAV URL.
+
+* Use `python-keyring <https://pypi.python.org/pypi/keyring>`_ with the CalDAV
+  URL as the service.
+* Providing a password on the command line. Note that this leaks into the
+  environment.
+* If no password is provided, the tools will ask for one.
+
 
 How to connect to Google
 ------------------------
