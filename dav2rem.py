@@ -36,6 +36,7 @@ def main():
     parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
     parser.add_argument('-u', '--davuser', help='The username for the calDAV server')
     parser.add_argument('-p', '--davpass', help='The password for the calDAV server')
+    parser.add_argument('-i', '--insecure', action='store_true', help='Ignore SSL certificate')
     parser.add_argument('remfile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
     args = parser.parse_args()
@@ -65,7 +66,8 @@ def main():
             if not passwd:
                 passwd = getpass()
 
-    client = DAVClient(args.davurl, username=user, password=passwd)
+    client = DAVClient(args.davurl, username=user, password=passwd,
+                       ssl_verify_cert=not args.insecure)
     calendar = Calendar(client, args.davurl)
 
     rdict = {splitext(basename(event.canonical_url))[0].replace('%40', '@'): event for event in calendar.events()}
