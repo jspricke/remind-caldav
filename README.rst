@@ -31,13 +31,13 @@ Providing the Password
 ----------------------
 
 There are a number of options how to provide the CalDAV password:
-* Use a `netrc(5) <http://linux.die.net/man/5/netrc>`_ file:
+
+* Use a `netrc(5) <http://linux.die.net/man/5/netrc>`_ file (<domain> being the
+  domain part of the CalDAV URL):
 
 ::
 
   machine <domain> login <user> password <password>
-
-<domain> being the domain part of the CalDAV URL.
 
 * Use `python-keyring <https://pypi.python.org/pypi/keyring>`_ with the CalDAV
   URL as the service.
