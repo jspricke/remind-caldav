@@ -83,7 +83,7 @@ def main():
             user = args.davuser
             try:
                 from keyring import get_password
-                passwd = get_password('rem2dav', '%s@%s' % (user, urlparse(args.davurl).netloc))
+                passwd = get_password(urlparse(args.davurl).netloc, user)
             except ImportError:
                 passwd = None
             if not passwd:
