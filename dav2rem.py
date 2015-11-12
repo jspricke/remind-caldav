@@ -33,9 +33,9 @@ def main():
 
     parser = ArgumentParser(description='Command line tool to download from CalDAV to Remind')
     parser.add_argument('-d', '--delete', action='store_true', help='Delete old events')
-    parser.add_argument('-r', '--davurl', required=True, help='The URL of the calDAV server')
-    parser.add_argument('-u', '--davuser', help='The username for the calDAV server')
-    parser.add_argument('-p', '--davpass', help='The password for the calDAV server')
+    parser.add_argument('-r', '--davurl', required=True, help='The URL of the CalDAV server')
+    parser.add_argument('-u', '--davuser', help='The username for the CalDAV server')
+    parser.add_argument('-p', '--davpass', help='The password for the CalDAV server')
     parser.add_argument('-i', '--insecure', action='store_true', help='Ignore SSL certificate')
     parser.add_argument('remfile', nargs='?', default=expanduser('~/.reminders'),
                         help='The Remind file to process (default: ~/.reminders)')
