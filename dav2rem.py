@@ -80,7 +80,6 @@ def main():
     remote = rdict.viewkeys() - ldict
     for uid in remote:
         vevent = rdict[uid]
-        vevent.load()
         rem.append(vevent.data)
 
 if __name__ == '__main__':
