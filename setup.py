@@ -18,7 +18,7 @@ setup(name='remind-caldav',
           'Topic :: Office/Business :: Scheduling',
           ],
 
-      install_requires=['remind', 'caldav', 'python-dateutil', 'vobject'],
+      install_requires=['remind', 'caldav', 'python-dateutil', 'python-card-me'],
       py_modules=['rem2dav', 'dav2rem'],
 
       entry_points={
