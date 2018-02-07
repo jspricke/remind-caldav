@@ -29,7 +29,7 @@ from os.path import basename, expanduser, splitext
 from remind import Remind
 from urlparse import urlparse
 from sys import stdin
-from card_me import iCalendar
+from vobject import iCalendar
 # pylint: disable=maybe-no-member
 
 
