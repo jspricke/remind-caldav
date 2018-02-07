@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Python library to convert between Remind and iCalendar
 #
-# Copyright (C) 2015  Jochen Sprickerhof
+# Copyright (C) 2015-2018 Jochen Sprickerhof
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ def main():
             (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
         except (IOError, TypeError):
             if not args.davuser:
-                print 'dav2rem: Error, argument -u/--davuser or netrc is required'
+                print('dav2rem: Error, argument -u/--davuser or netrc is required')
                 return 1
             user = args.davuser
             try:
@@ -81,6 +81,7 @@ def main():
     for uid in remote:
         vevent = rdict[uid]
         rem.append(vevent.data)
+
 
 if __name__ == '__main__':
     main()

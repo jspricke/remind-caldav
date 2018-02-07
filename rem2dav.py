@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Python library to convert between Remind and iCalendar
 #
-# Copyright (C) 2015  Jochen Sprickerhof
+# Copyright (C) 2015-2018 Jochen Sprickerhof
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ def main():
     parser.add_argument('-z', '--zone', default='Europe/Berlin',
                         help='Timezone of Remind file (default: Europe/Berlin)')
     parser.add_argument('-s', '--startdate', type=lambda s: parse(s).date(),
-                        default=date.today()-timedelta(weeks=12), help='Start offset for remind call (default: -12 weeks)')
+                        default=date.today() - timedelta(weeks=12), help='Start offset for remind call (default: -12 weeks)')
     parser.add_argument('-m', '--month', type=int, default=15,
                         help='Number of month to generate calendar beginning wit stadtdate (default: 15)')
     parser.add_argument('-d', '--delete', action='store_true', help='Delete old events')
@@ -78,7 +78,7 @@ def main():
             (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
         except (IOError, TypeError):
             if not args.davuser:
-                print 'rem2dav: Error, argument -u/--davuser or netrc is required'
+                print('rem2dav: Error, argument -u/--davuser or netrc is required')
                 return 1
             user = args.davuser
             try:
@@ -116,6 +116,7 @@ def main():
         remote = rdict.viewkeys() - ldict.viewkeys()
         for uid in remote:
             rdict[uid].delete()
+
 
 if __name__ == '__main__':
     main()
