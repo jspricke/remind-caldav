@@ -27,7 +27,7 @@ from getpass import getpass
 from netrc import netrc
 from os.path import basename, expanduser, splitext
 from remind import Remind
-from urlparse import urlparse
+from urllib.parse import urlparse
 from sys import stdin
 from vobject import iCalendar
 # pylint: disable=maybe-no-member
@@ -101,19 +101,19 @@ def main():
 
         if hasattr(old_vobject, 'vevent_list'):
             odict = {event.uid.value: event for event in old_vobject.vevent_list}
-            intersect = rdict.viewkeys() & odict.viewkeys()
+            intersect = rdict.keys() & odict.keys()
             rdict = {key: rdict[key] for key in intersect}
         else:
             rdict = {}
 
-    local = ldict.viewkeys() - rdict.viewkeys()
+    local = ldict.keys() - rdict.keys()
     for uid in local:
         ncal = iCalendar()
         ncal.add(ldict[uid])
         calendar.add_event(ncal.serialize())
 
     if args.delete or args.old:
-        remote = rdict.viewkeys() - ldict.viewkeys()
+        remote = rdict.keys() - ldict.keys()
         for uid in remote:
             rdict[uid].delete()
 
