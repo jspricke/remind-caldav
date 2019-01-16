@@ -60,7 +60,7 @@ def main():
 
     if args.infile == '-':
         remind = Remind(args.infile, zone, args.startdate, args.month)
-        vobject = remind.stdin_to_vobject(stdin.read().decode('utf-8'))
+        vobject = remind.stdin_to_vobject(stdin.read())
     else:
         remind = Remind(args.infile, zone, args.startdate, args.month)
         vobject = remind.to_vobject()
