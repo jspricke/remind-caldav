@@ -24,7 +24,6 @@ from getpass import getpass
 from netrc import netrc
 from os.path import basename, expanduser, splitext
 from remind import Remind
-from urlparse import urlparse
 # pylint: disable=maybe-no-member
 
 
@@ -52,7 +51,7 @@ def main():
         passwd = args.davpass
     else:
         try:
-            (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
+            (user, _, passwd) = netrc().authenticators(urllib.parse(args.davurl).netloc)
         except (IOError, TypeError):
             if not args.davuser:
                 print('dav2rem: Error, argument -u/--davuser or netrc is required')
@@ -60,7 +59,7 @@ def main():
             user = args.davuser
             try:
                 from keyring import get_password
-                passwd = get_password(urlparse(args.davurl).netloc, user)
+                passwd = get_password(urllib.parse(args.davurl).netloc, user)
             except ImportError:
                 passwd = None
             if not passwd:
@@ -73,11 +72,11 @@ def main():
     rdict = {splitext(basename(event.canonical_url))[0].replace('%40', '@'): event for event in calendar.events()}
 
     if args.delete:
-        local = ldict - rdict.viewkeys()
+        local = ldict - rdict.items()
         for uid in local:
             rem.remove(uid)
 
-    remote = rdict.viewkeys() - ldict
+    remote = rdict.items() - ldict
     for uid in remote:
         vevent = rdict[uid]
         rem.append(vevent.data)
