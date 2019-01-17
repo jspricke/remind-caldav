@@ -24,7 +24,7 @@ from getpass import getpass
 from netrc import netrc
 from os.path import basename, expanduser, splitext
 from remind import Remind
-from urlparse import urlparse
+from urllib.parse import urlparse
 # pylint: disable=maybe-no-member
 
 
@@ -73,11 +73,11 @@ def main():
     rdict = {splitext(basename(event.canonical_url))[0].replace('%40', '@'): event for event in calendar.events()}
 
     if args.delete:
-        local = ldict - rdict.viewkeys()
+        local = ldict - rdict.keys()
         for uid in local:
             rem.remove(uid)
 
-    remote = rdict.viewkeys() - ldict
+    remote = rdict.keys() - ldict
     for uid in remote:
         vevent = rdict[uid]
         rem.append(vevent.data)
