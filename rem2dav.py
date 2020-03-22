@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Python library to convert between Remind and iCalendar
 #
-# Copyright (C) 2015-2018 Jochen Sprickerhof
+# Copyright (C) 2015-2020 Jochen Sprickerhof
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

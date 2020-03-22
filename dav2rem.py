@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Python library to convert between Remind and iCalendar
 #
-# Copyright (C) 2015-2018 Jochen Sprickerhof
+# Copyright (C) 2015-2020 Jochen Sprickerhof
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ from netrc import netrc
 from os.path import basename, expanduser, splitext
 from remind import Remind
 from urllib.parse import urlparse
+from vobject import readOne
 # pylint: disable=maybe-no-member
 
 
@@ -80,7 +81,7 @@ def main():
     remote = rdict.keys() - ldict
     for uid in remote:
         vevent = rdict[uid]
-        rem.append(vevent.data)
+        rem.append_vobject(readOne(vevent.data))
 
 
 if __name__ == '__main__':
