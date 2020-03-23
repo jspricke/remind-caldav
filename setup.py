@@ -1,10 +1,16 @@
 from setuptools import setup
 
+ROOTDIR = path.abspath(path.dirname(__file__))
+with open(path.join(ROOTDIR, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(name='remind-caldav',
       version='0.7.0',
       description='''
        Remind CalDAV tools
        ''',
+      long_description=long_description,
+      long_description_content_type='text/x-rst',
       author='Jochen Sprickerhof',
       author_email='remind@jochen.sprickerhof.de',
       license='GPLv3+',
