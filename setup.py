@@ -6,7 +6,7 @@ with open(path.join(ROOTDIR, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='remind-caldav',
-      version='0.7.0',
+      version='0.7.1',
       description='''
        Remind CalDAV tools
        ''',
