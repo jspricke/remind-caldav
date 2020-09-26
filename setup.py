@@ -1,4 +1,5 @@
 from setuptools import setup
+from os import path
 
 ROOTDIR = path.abspath(path.dirname(__file__))
 with open(path.join(ROOTDIR, 'README.rst'), encoding='utf-8') as f:
