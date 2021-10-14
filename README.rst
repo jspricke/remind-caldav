@@ -25,7 +25,7 @@ Using python-setuptools
 
 ::
 
-  $ python setup.py install
+  $ python3 setup.py install
 
 Providing the Password
 ----------------------
