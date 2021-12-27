@@ -22,6 +22,7 @@ from argparse import ArgumentParser
 from getpass import getpass
 from netrc import netrc
 from os.path import basename, expanduser, splitext
+from sys import exit
 from urllib.parse import urlparse
 
 from caldav import Calendar, DAVClient
@@ -68,7 +69,7 @@ def main():
         except (IOError, TypeError):
             if not args.davuser:
                 print("dav2rem: Error, argument -u/--davuser or netrc is required")
-                return 1
+                exit(1)
             user = args.davuser
             try:
                 from keyring import get_password

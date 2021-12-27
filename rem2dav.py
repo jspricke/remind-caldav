@@ -23,7 +23,7 @@ from datetime import date, timedelta
 from getpass import getpass
 from netrc import netrc
 from os.path import basename, expanduser, splitext
-from sys import stdin
+from sys import exit, stdin
 from urllib.parse import urlparse
 
 from caldav import Calendar, DAVClient
@@ -109,7 +109,7 @@ def main():
         except (IOError, TypeError):
             if not args.davuser:
                 print("rem2dav: Error, argument -u/--davuser or netrc is required")
-                return 1
+                exit(1)
             user = args.davuser
             try:
                 from keyring import get_password
