@@ -8,7 +8,7 @@ with open(path.join(ROOTDIR, "README.rst"), encoding="utf-8") as f:
 
 setup(
     name="remind-caldav",
-    version="0.7.1",
+    version="0.8.0",
     description="""
        Remind CalDAV tools
        """,
