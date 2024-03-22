@@ -66,7 +66,7 @@ def main():
     else:
         try:
             (user, _, passwd) = netrc().authenticators(urlparse(args.davurl).netloc)
-        except (IOError, TypeError):
+        except (OSError, TypeError):
             if not args.davuser:
                 print("dav2rem: Error, argument -u/--davuser or netrc is required")
                 exit(1)
