@@ -60,6 +60,13 @@ def main():
         default=15,
         help="Number of month to generate calendar beginning wit stadtdate (default: 15)",
     )
+    parser.add_argument(
+        "-a",
+        "--alarm",
+        type=int,
+        default=-10,
+        help="Trigger time for the alarm before the event in minutes (default: -10)",
+    )
     parser.add_argument("-d", "--delete", action="store_true", help="Delete old events")
     parser.add_argument(
         "-r", "--davurl", required=True, help="The URL of the CalDAV server"
@@ -89,10 +96,10 @@ def main():
     zone.zone = args.zone
 
     if args.infile == "-":
-        remind = Remind(args.infile, zone, args.startdate, args.month)
+        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm)
         vobject = remind.stdin_to_vobject(stdin.read())
     else:
-        remind = Remind(args.infile, zone, args.startdate, args.month)
+        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm)
         vobject = remind.to_vobject()
 
     if hasattr(vobject, "vevent_list"):
