@@ -58,7 +58,7 @@ def main():
         "--month",
         type=int,
         default=15,
-        help="Number of month to generate calendar beginning wit stadtdate (default: 15)",
+        help="Number of months to generate calendar beginning with startdate (default: 15)",
     )
     parser.add_argument(
         "-a",
