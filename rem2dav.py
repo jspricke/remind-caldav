@@ -96,10 +96,10 @@ def main():
     zone.zone = args.zone
 
     if args.infile == "-":
-        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm)
+        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm))
         vobject = remind.stdin_to_vobject(stdin.read())
     else:
-        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm)
+        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm))
         vobject = remind.to_vobject()
 
     if hasattr(vobject, "vevent_list"):
