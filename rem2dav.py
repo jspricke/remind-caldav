@@ -28,7 +28,6 @@ from urllib.parse import urlparse
 
 from caldav import Calendar, DAVClient
 from dateutil.parser import parse
-from dateutil.tz import gettz
 from remind import Remind
 from vobject import iCalendar
 
@@ -43,8 +42,7 @@ def main():
     parser.add_argument(
         "-z",
         "--zone",
-        default="Europe/Berlin",
-        help="Timezone of Remind file (default: Europe/Berlin)",
+        help="Timezone of Remind file (default: local timezone)",
     )
     parser.add_argument(
         "-s",
@@ -90,16 +88,11 @@ def main():
     )
     args = parser.parse_args()
 
-    zone = gettz(args.zone)
-    # Manually set timezone name to generate correct ical files
-    # (python-vobject tests for the zone attribute)
-    zone.zone = args.zone
-
     if args.infile == "-":
-        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm))
+        remind = Remind(args.infile, args.zone, args.startdate, args.month, timedelta(minutes=args.alarm))
         vobject = remind.stdin_to_vobject(stdin.read())
     else:
-        remind = Remind(args.infile, zone, args.startdate, args.month, timedelta(minutes=args.alarm))
+        remind = Remind(args.infile, args.zone, args.startdate, args.month, timedelta(minutes=args.alarm))
         vobject = remind.to_vobject()
 
     if hasattr(vobject, "vevent_list"):
@@ -138,7 +131,7 @@ def main():
     }
 
     if args.old:
-        old = Remind(args.old, zone, args.startdate, args.month)
+        old = Remind(args.old, args.zone, args.startdate, args.month)
         old_vobject = old.to_vobject()
 
         if hasattr(old_vobject, "vevent_list"):
