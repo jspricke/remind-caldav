@@ -34,6 +34,32 @@ from vobject import iCalendar
 # pylint: disable=maybe-no-member
 
 
+def _normalize(component):
+    """Return the property values of a vobject component as comparable dict.
+
+    DTSTAMP is ignored as it changes on every run.
+    """
+    return {
+        name: [
+            _normalize(line) if hasattr(line, "contents") else line.value
+            for line in lines
+        ]
+        for name, lines in component.contents.items()
+        if name != "dtstamp"
+    }
+
+
+def _changed(local, remote):
+    """Check if the remote event differs from the local one.
+
+    Only properties generated locally are compared, so properties added by the
+    server (SEQUENCE, LAST-MODIFIED, ...) are ignored.
+    """
+    local = _normalize(local)
+    remote = _normalize(remote)
+    return any(remote.get(name) != values for name, values in local.items())
+
+
 def main():
     """Command line tool to upload a Remind file to CalDAV."""
     parser = ArgumentParser(
@@ -146,6 +172,13 @@ def main():
         ncal = iCalendar()
         ncal.add(ldict[uid])
         calendar.add_event(ncal.serialize())
+
+    for uid in ldict.keys() & rdict.keys():
+        if _changed(ldict[uid], rdict[uid].vobject_instance.vevent):
+            ncal = iCalendar()
+            ncal.add(ldict[uid])
+            rdict[uid].data = ncal.serialize()
+            rdict[uid].save()
 
     if args.delete or args.old:
         remote = rdict.keys() - ldict.keys()
