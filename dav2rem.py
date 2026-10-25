@@ -37,7 +37,12 @@ def main():
     parser = ArgumentParser(
         description="Command line tool to download from CalDAV to Remind"
     )
-    parser.add_argument("-d", "--delete", action="store_true", help="Delete old events")
+    parser.add_argument(
+        "-d",
+        "--delete",
+        action="store_true",
+        help="Delete events from the remind file that are not on the CalDAV server.",
+    )
     parser.add_argument(
         "-r", "--davurl", required=True, help="The URL of the CalDAV server"
     )

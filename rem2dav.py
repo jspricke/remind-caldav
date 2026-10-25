@@ -91,7 +91,12 @@ def main():
         default=-10,
         help="Trigger time for the alarm before the event in minutes (default: -10)",
     )
-    parser.add_argument("-d", "--delete", action="store_true", help="Delete old events")
+    parser.add_argument(
+        "-d",
+        "--delete",
+        action="store_true",
+        help="Delete events from the CalDAV server that are not in the given Remind file.",
+    )
     parser.add_argument(
         "-r", "--davurl", required=True, help="The URL of the CalDAV server"
     )
